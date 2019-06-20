@@ -242,5 +242,5 @@ ModelManifest.xml
 .fake/
 
 # proj 
-.vcxproj
-.vcxproj.filters 
+*.vcxproj
+*.vcxproj.filters 
