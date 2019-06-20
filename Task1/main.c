@@ -5,29 +5,32 @@
 
 int32_t floatToFixed32(float x)
 {
-	if (x >= 1 || x < -1)
+	if (x >= 1)
 	{
-		printf("Converting error: Float must be < 1 and >= -1\n");
-		system("pause");
-		exit(0);
+		return INT32_MAX;		//TODO: check
+	}
+	else if (x < -1)
+	{
+		return INT32_MIN;		//TODO
 	}
 
-	return (int32_t)(x * ((1 << FRACTIONAL_BITS) - 1));
+	return (int32_t)(x * (1 << FRACTIONAL_BITS));
 }
 
 float fixed32ToFloat(int32_t x)
 {
-	return (float)x / (float)((1 << FRACTIONAL_BITS) - 1);
+	return (float)x / (float)(1 << FRACTIONAL_BITS);
 }
 
 int32_t Add(int32_t x, int32_t y)
 {
-	if ((x > 0 && y > INT32_MAX - x) || (x < 0 && y < INT32_MIN - x))
-
+	if (x > 0 && y > INT32_MAX - x)
 	{
-		printf("Add error: overfloat\n");
-		system("pause");
-		exit(0);
+		return INT32_MAX;		//TODO
+	}
+	else if (x < 0 && y < INT32_MIN - x)
+	{
+		return INT32_MIN;		//TODO
 	}
 
 	return x + y;
@@ -35,11 +38,13 @@ int32_t Add(int32_t x, int32_t y)
 
 int32_t Sub(int32_t x, int32_t y)
 {
-	if ((x > 0 && -y > INT32_MAX - x) || (x < 0 && -y < INT32_MIN - x))
+	if (x > 0 && -y > INT32_MAX - x)
 	{
-		printf("Sub error: overfloat\n");
-		system("pause");
-		exit(0);
+		return INT32_MAX;		//TODO
+	}
+	else if (x < 0 && -y < INT32_MIN - x)
+	{
+		return INT32_MIN;		//TODO
 	}
 
 	return x - y;
@@ -47,13 +52,6 @@ int32_t Sub(int32_t x, int32_t y)
 
 int32_t Mul(int32_t x, int32_t y)
 {
-	if (x == 0x80000000 && y == 0x80000000)
-	{
-		printf("Mul error: overfloat\n");
-		system("pause");
-		exit(0);
-	}
-
 	return (int32_t)(((int64_t)x * y) >> 31);
 }
 
