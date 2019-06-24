@@ -21,11 +21,6 @@ float fixed32ToFloat(int32_t x)
 	return (float)(x / (double)(1LL << FRACTIONAL_BITS));
 }
 
-int32_t roundFixed64To32(int64_t x)
-{
-	return (int32_t)((x + (1LL << 31) >> 32));
-}
-
 int32_t Add(int32_t x, int32_t y)
 {
 	if (x > 0 && y > INT32_MAX - x)
