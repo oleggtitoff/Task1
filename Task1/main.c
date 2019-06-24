@@ -21,32 +21,33 @@ float fixed32ToFloat(int32_t x)
 	return (float)(x / (double)(1LL << FRACTIONAL_BITS));
 }
 
-int32_t Add(int32_t x, int32_t y)
+int32_t	Saturation(int64_t x)
 {
-	if (x > 0 && y > INT32_MAX - x)
-	{
-		return INT32_MAX;
-	}
-	else if (x < 0 && y < INT32_MIN - x)
+	if (x < (int64_t)INT32_MIN)
 	{
 		return INT32_MIN;
 	}
+	else if (x >(int64_t)INT32_MAX)
+	{
+		return INT32_MAX;
+	}
 
-	return x + y;
+	return (int32_t)x;
+}
+
+int32_t roundFixed64To32(int64_t x)
+{
+	return (int32_t)((x + (1LL << 31) >> 32));
+}
+
+int32_t Add(int32_t x, int32_t y)
+{
+	return Saturation((int64_t)x + y);
 }
 
 int32_t Sub(int32_t x, int32_t y)
 {
-	if (x > 0 && -y > INT32_MAX - x)
-	{
-		return INT32_MAX;
-	}
-	else if (x < 0 && -y < INT32_MIN - x)
-	{
-		return INT32_MIN;
-	}
-
-	return x - y;
+	return Saturation((int64_t)x - y);
 }
 
 int32_t Mul(int32_t x, int32_t y)
@@ -56,7 +57,7 @@ int32_t Mul(int32_t x, int32_t y)
 		return INT32_MAX;
 	}
 
-	return (int32_t)(((int64_t)x * y) >> 31);
+	return roundFixed64To32(((int64_t)x * y) << 1);
 }
 
 int32_t Mac(int32_t x, int32_t y, int32_t acc)
@@ -71,18 +72,7 @@ int32_t MSub(int32_t x, int32_t y, int32_t sub)
 
 int32_t LeftShift(int32_t x, int8_t shift)
 {
-	int64_t result = (int64_t)x << shift;
-
-	if ((x > 0 && shift >= 31) || result > INT32_MAX)
-	{
-		return INT32_MAX;
-	}
-	else if ((x < 0 && shift >= 31) || result < INT32_MIN)
-	{
-		return INT32_MIN;
-	}
-
-	return result;
+	return Saturation((int64_t)x << shift);
 }
 
 int32_t RightShift(int32_t x, int8_t shift)
