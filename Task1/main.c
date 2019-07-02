@@ -27,7 +27,7 @@ int32_t	Saturation(int64_t x)
 	{
 		return INT32_MIN;
 	}
-	else if (x >(int64_t)INT32_MAX)
+	else if (x > (int64_t)INT32_MAX)
 	{
 		return INT32_MAX;
 	}
