@@ -37,7 +37,7 @@ int32_t	Saturation(int64_t x)
 
 int32_t roundFixed64To32(int64_t x)
 {
-	return (int32_t)((x + (1LL << 31) >> 32));
+	return (int32_t)((x + (1LL << 31)) >> 32);
 }
 
 int32_t Add(int32_t x, int32_t y)
