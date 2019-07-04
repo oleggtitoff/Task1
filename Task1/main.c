@@ -70,6 +70,73 @@ int32_t MSub(int32_t x, int32_t y, int32_t sub)
 	return Sub(Mul(x, y), sub);
 }
 
+int32_t Abs(int32_t x)
+{
+	if (x < 0)
+	{
+		return -x;
+	}
+
+	return x;
+}
+
+int32_t binarySearchDiv(int32_t x, int32_t y)
+{
+	_Bool isNegative = 0;
+	int32_t precision = 0;
+	int32_t low = 0;
+	int32_t high = INT32_MAX;
+	int32_t mid;
+	int32_t midY;
+
+	if ((x < 0 && y > 0) || (x > 0 && y < 0))
+	{
+		isNegative = 1;
+	}
+
+	x = Abs(x);
+	y = Abs(y);
+
+	if (y == 0 || (!isNegative && x >= y))
+	{
+		return INT32_MAX;
+	}
+	else if (isNegative && x > y)
+	{
+		return INT32_MIN;
+	}
+
+	if (x == 0)
+	{
+		return 0;
+	}
+
+	while (1)
+	{
+		mid = Add(low, (Sub(high, low) >> 1));
+		midY = Mul(mid, y);
+
+		if (Abs(Sub(midY, x)) <= precision)
+		{
+			if (isNegative)
+			{
+				return -mid;
+			}
+
+			return mid;
+		}
+
+		if (midY < x)
+		{
+			low = mid;
+		}
+		else
+		{
+			high = mid;
+		}
+	}
+}
+
 int32_t LeftShift(int32_t x, int8_t shift)
 {
 	return Saturation((int64_t)x << shift);
