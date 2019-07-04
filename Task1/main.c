@@ -74,7 +74,7 @@ int32_t Abs(int32_t x)
 {
 	if (x < 0)
 	{
-		return -x;
+		return Saturation(-(int64_t)x);
 	}
 
 	return x;
